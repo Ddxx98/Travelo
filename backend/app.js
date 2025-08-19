@@ -8,6 +8,8 @@ import registerRoute from "./routes/register.js";
 import loginRoute from "./routes/login.js";
 import verifyRoute from "./routes/verify.js";
 import listingsRoute from "./routes/listings.js";
+import categoriesRoute from "./routes/category.js";
+import bookingsRoute from "./routes/bookings.js";
 
 dotenv.config();
 
@@ -26,7 +28,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", registerRoute);
 app.use("/api/auth", loginRoute);
 app.use("/api/auth", verifyRoute);
-app.use("/api", listingsRoute);
+app.use("/api/listings", listingsRoute);
+app.use("/api/categories", categoriesRoute);
+app.use("/api/bookings", bookingsRoute);
 
 // Generic error handler — always after all routes
 app.use((err, req, res, next) => {

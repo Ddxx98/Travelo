@@ -6,7 +6,6 @@ import {
   Box,
   CircularProgress,
   Alert,
-  Button,
   TableContainer,
   Table,
   TableHead,
@@ -70,43 +69,51 @@ const BookingRequests = () => {
                 <TableCell>Booking ID</TableCell>
                 <TableCell>User</TableCell>
                 <TableCell>Listing</TableCell>
-                <TableCell>Date</TableCell>
+                <TableCell>Check-In</TableCell>
+                <TableCell>Check-Out</TableCell>
+                <TableCell>Guests</TableCell>
+                <TableCell>Address</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {requests.map(
-                ({ id, user, listing, date, status }) => (
-                  <TableRow key={id}>
-                    <TableCell>{id}</TableCell>
-                    <TableCell>{user?.name || "N/A"}</TableCell>
-                    <TableCell>{listing?.title || "N/A"}</TableCell>
-                    <TableCell>{new Date(date).toLocaleDateString()}</TableCell>
-                    <TableCell>{status}</TableCell>
-                    <TableCell align="center">
-                      {status === "pending" && (
-                        <>
-                          <IconButton
-                            color="success"
-                            aria-label="approve"
-                            onClick={() => handleApprove(id)}
-                          >
-                            <CheckCircle />
-                          </IconButton>
-                          <IconButton
-                            color="error"
-                            aria-label="reject"
-                            onClick={() => handleReject(id)}
-                          >
-                            <Cancel />
-                          </IconButton>
-                        </>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )
-              )}
+              {requests.map((booking) => (
+                <TableRow key={booking._id}>
+                  <TableCell>{booking._id}</TableCell>
+                  <TableCell>{booking.userId || "N/A"}</TableCell>
+                  <TableCell>{booking.listingId || "N/A"}</TableCell>
+                  <TableCell>
+                    {new Date(booking.checkIn).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(booking.checkOut).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{booking.guests}</TableCell>
+                  <TableCell>{booking.address}</TableCell>
+                  <TableCell>{booking.status}</TableCell>
+                  <TableCell align="center">
+                    {booking.status === "pending" && (
+                      <>
+                        <IconButton
+                          color="success"
+                          aria-label="approve"
+                          onClick={() => handleApprove(booking._id)}
+                        >
+                          <CheckCircle />
+                        </IconButton>
+                        <IconButton
+                          color="error"
+                          aria-label="reject"
+                          onClick={() => handleReject(booking._id)}
+                        >
+                          <Cancel />
+                        </IconButton>
+                      </>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

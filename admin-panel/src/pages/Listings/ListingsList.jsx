@@ -81,23 +81,23 @@ const ListingsList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {listings.map(({ id, title, category, status }) => (
-                <TableRow key={id}>
+              {listings.map(({ _id, title, category, status }) => (
+                <TableRow key={_id}>
                   <TableCell>{title}</TableCell>
-                  <TableCell>{category?.name || "N/A"}</TableCell>
+                  <TableCell>{category || "N/A"}</TableCell>
                   <TableCell>{status}</TableCell>
                   <TableCell align="right">
                     <IconButton
                       color="primary"
                       aria-label="edit"
-                      onClick={() => handleEdit(id)}
+                      onClick={() => handleEdit(_id)}
                     >
                       <Edit />
                     </IconButton>
                     <IconButton
                       color="error"
                       aria-label="delete"
-                      onClick={() => handleDelete(id)}
+                      onClick={() => handleDelete(_id)}
                     >
                       <Delete />
                     </IconButton>

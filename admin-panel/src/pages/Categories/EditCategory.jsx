@@ -28,7 +28,7 @@ const EditCategory = () => {
       dispatch(fetchCategories());
     } else {
       // Find category details to edit
-      const category = categories.find((cat) => cat.id === id);
+      const category = categories.find((cat) => cat._id === id);
       if (category) {
         setName(category.name);
         setDescription(category.description || "");

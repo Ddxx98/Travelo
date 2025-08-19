@@ -22,9 +22,10 @@ const AddListing = () => {
   const { categories } = useSelector((state) => state.categories);
 
   const [title, setTitle] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [category, setCategory] = useState("");
   const [status, setStatus] = useState("active");
   const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(""); // New price state
   const [formError, setFormError] = useState(null);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const AddListing = () => {
     if (formError) {
       setFormError(null);
     }
-  }, [title, categoryId, status, description]);
+  }, [title, category, status, description, price]); // Added price
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,12 +46,16 @@ const AddListing = () => {
       setFormError("Title is required");
       return;
     }
-    if (!categoryId) {
+    if (!category) {
       setFormError("Category must be selected");
       return;
     }
+    if (!price || isNaN(price) || Number(price) <= 0) {
+      setFormError("Please enter a valid positive price");
+      return;
+    }
 
-    const listingData = { title, categoryId, status, description };
+    const listingData = { title, category, status, description, price: Number(price) };
 
     dispatch(addListing(listingData))
       .unwrap()
@@ -100,19 +105,32 @@ const AddListing = () => {
         <TextField
           select
           label="Category"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           fullWidth
           required
           margin="normal"
           disabled={loading}
         >
           {categories.map((cat) => (
-            <MenuItem key={cat.id} value={cat.id}>
+            <MenuItem key={cat._id} value={cat.name}>
               {cat.name}
             </MenuItem>
           ))}
         </TextField>
+
+        <TextField
+          label="Price"
+          variant="outlined"
+          fullWidth
+          required
+          margin="normal"
+          type="number"
+          inputProps={{ min: 0, step: 0.01 }}
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          disabled={loading}
+        />
 
         <TextField
           select
@@ -140,12 +158,7 @@ const AddListing = () => {
         />
 
         <Box sx={{ position: "relative", mt: 3 }}>
-          <Button
-            variant="contained"
-            type="submit"
-            fullWidth
-            disabled={loading}
-          >
+          <Button variant="contained" type="submit" fullWidth disabled={loading}>
             Add Listing
           </Button>
           {loading && (

@@ -81,22 +81,22 @@ const CategoriesList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map(({ id, name, description }) => (
-                <TableRow key={id}>
+              {categories.map(({ _id, name, description }) => (
+                <TableRow key={_id}>
                   <TableCell>{name}</TableCell>
                   <TableCell>{description}</TableCell>
                   <TableCell align="right">
                     <IconButton
                       color="primary"
                       aria-label="edit"
-                      onClick={() => handleEdit(id)}
+                      onClick={() => handleEdit(_id)}
                     >
                       <Edit />
                     </IconButton>
                     <IconButton
                       color="error"
                       aria-label="delete"
-                      onClick={() => handleDelete(id)}
+                      onClick={() => handleDelete(_id)}
                     >
                       <Delete />
                     </IconButton>

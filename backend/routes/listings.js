@@ -4,10 +4,10 @@ import { verifyTokenMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/listings", verifyTokenMiddleware, listingsController.getAllListings);
-router.get("/listings/:id", verifyTokenMiddleware, listingsController.getListingById);
-router.post("/listings", verifyTokenMiddleware, listingsController.createListing);
-router.put("/listings/:id", verifyTokenMiddleware, listingsController.updateListing);
-router.delete("/listings/:id", verifyTokenMiddleware, listingsController.deleteListing);
+router.get("/", verifyTokenMiddleware, listingsController.getAllListings);
+router.get("/:id", verifyTokenMiddleware, listingsController.getListingById);
+router.post("/", verifyTokenMiddleware, listingsController.createListing);
+router.put("/:id", verifyTokenMiddleware, listingsController.updateListing);
+router.delete("/:id", verifyTokenMiddleware, listingsController.deleteListing);
 
 export default router;

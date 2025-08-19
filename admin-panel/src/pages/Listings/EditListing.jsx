@@ -35,7 +35,7 @@ const EditListing = () => {
     if (!listings.length) {
       dispatch(fetchListings());
     } else {
-      const listing = listings.find((l) => l.id === id);
+      const listing = listings.find((l) => l._id === id);
       if (listing) {
         setTitle(listing.title);
         setCategoryId(listing.categoryId || "");
@@ -128,7 +128,7 @@ const EditListing = () => {
             disabled={loading}
           >
             {categories.map((cat) => (
-              <MenuItem key={cat.id} value={cat.id}>
+              <MenuItem key={cat._id} value={cat._id}>
                 {cat.name}
               </MenuItem>
             ))}
