@@ -1,9 +1,10 @@
 // src/App.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import Footer from "./components/Footer";  // Import Footer here
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Login from "./pages/Auth/Login";
@@ -16,12 +17,29 @@ import BookingDetails from "./pages/Booking/BookingDetails";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme, Drawer } from "@mui/material";
 
 const drawerWidth = 240;
 const headerHeight = 64;
 
 const App = () => {
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawerProps = {
+    sx: {
+      width: drawerWidth,
+      flexShrink: 0,
+      "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+    },
+  };
+
   return (
     <>
       <CssBaseline /> {/* Normalize styles */}
@@ -35,17 +53,24 @@ const App = () => {
           path="/*"
           element={
             <ProtectedRoute>
+              {/* Outer container with column flex layout */}
               <Box sx={{ display: "flex", height: "100vh" }}>
                 {/* Sidebar */}
-                <Sidebar
-                  sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
-                  }}
-                />
+                {isSmDown ? (
+                  <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{ keepMounted: true }} // Better mobile performance
+                    {...drawerProps}
+                  >
+                    <Sidebar />
+                  </Drawer>
+                ) : (
+                  <Sidebar {...drawerProps} />
+                )}
 
-                {/* Main area */}
+                {/* Main content area with header, content, footer */}
                 <Box
                   component="main"
                   sx={{
@@ -53,19 +78,14 @@ const App = () => {
                     display: "flex",
                     flexDirection: "column",
                     height: "100vh",
-                    overflow: "hidden",
                   }}
                 >
                   {/* Header */}
                   <Header
-                    sx={{
-                      height: headerHeight,
-                      flexShrink: 0,
-                      zIndex: (theme) => theme.zIndex.drawer + 1,
-                    }}
+                    onMenuClick={handleDrawerToggle}
                   />
 
-                  {/* Content area with scroll */}
+                  {/* Scrollable content */}
                   <Box
                     sx={{
                       flexGrow: 1,
@@ -85,6 +105,9 @@ const App = () => {
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Box>
+
+                  {/* Footer */}
+                  <Footer />
                 </Box>
               </Box>
             </ProtectedRoute>

@@ -1,4 +1,5 @@
-import React from "react";
+// src/App.jsx
+import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -17,9 +18,28 @@ import EditListing from "./pages/Listings/EditListing";
 import BookingRequests from "./pages/Bookings/BookingRequests";
 import BookingHistory from "./pages/Bookings/BookingHistory";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme, Drawer } from "@mui/material";
+
+const drawerWidth = 240;
 
 const App = () => {
+  const theme = useTheme();
+  const isSmDown = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawerProps = {
+    sx: {
+      width: drawerWidth,
+      flexShrink: 0,
+      "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+    },
+  };
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -32,10 +52,40 @@ const App = () => {
         element={
           <ProtectedRoute>
             <Box sx={{ display: "flex", minHeight: "100vh" }}>
-              <Sidebar />
-              <Box component="main" sx={{ flexGrow: 1 }}>
-                <Header />
-                <Box sx={{ p: 3 }}>
+              {isSmDown ? (
+                <Drawer
+                  variant="temporary"
+                  open={mobileOpen}
+                  onClose={handleDrawerToggle}
+                  ModalProps={{ keepMounted: true }} // improve mobile performance
+                  {...drawerProps}
+                >
+                  <Sidebar onLinkClick={handleDrawerToggle} />
+                </Drawer>
+              ) : (
+                <Sidebar {...drawerProps} />
+              )}
+
+              <Box
+                component="main"
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100vh",
+                  overflow: "hidden",
+                }}
+              >
+                <Header onMenuClick={handleDrawerToggle} />
+
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    overflowY: "auto",
+                    p: 3,
+                    bgcolor: "background.default",
+                  }}
+                >
                   <Routes>
                     <Route index element={<Dashboard />} />
                     <Route path="dashboard" element={<Dashboard />} />
@@ -54,7 +104,7 @@ const App = () => {
                     <Route path="bookings/requests" element={<BookingRequests />} />
                     <Route path="bookings/history" element={<BookingHistory />} />
 
-                    {/* Redirect any unmatched under protected */}
+                    {/* Redirect unmatched protected */}
                     <Route path="*" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
                 </Box>
@@ -64,7 +114,7 @@ const App = () => {
         }
       />
 
-      {/* Redirect unmatched public routes to login */}
+      {/* Redirect unknown public routes */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

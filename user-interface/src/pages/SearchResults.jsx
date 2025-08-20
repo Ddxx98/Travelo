@@ -38,7 +38,7 @@ const SearchResults = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ mt: 10 }}>
       <Typography variant="h4" gutterBottom>
         Search Listings
       </Typography>

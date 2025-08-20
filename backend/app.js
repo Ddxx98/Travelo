@@ -10,6 +10,7 @@ import verifyRoute from "./routes/verify.js";
 import listingsRoute from "./routes/listings.js";
 import categoriesRoute from "./routes/category.js";
 import bookingsRoute from "./routes/bookings.js";
+import profileRoute from "./routes/profile.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/auth", verifyRoute);
 app.use("/api/listings", listingsRoute);
 app.use("/api/categories", categoriesRoute);
 app.use("/api/bookings", bookingsRoute);
+app.use("/api/profile", profileRoute);
 
 // Generic error handler — always after all routes
 app.use((err, req, res, next) => {

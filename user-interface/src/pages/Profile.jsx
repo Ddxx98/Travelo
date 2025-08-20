@@ -16,8 +16,9 @@ const Profile = () => {
 
   const { user, loading, error, updateSuccess } = useSelector((state) => state.auth);
 
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
+  // Always initialize state to empty string if user or its fields might be undefined.
+  const [name, setName] = useState(user?.name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
   const [saving, setSaving] = useState(false);
   const [localError, setLocalError] = useState(null);
 
@@ -25,8 +26,8 @@ const Profile = () => {
     if (!user) {
       dispatch(fetchUserProfile());
     } else {
-      setName(user.name);
-      setEmail(user.email);
+      setName(user?.name ?? "");
+      setEmail(user?.email ?? "");
     }
   }, [dispatch, user]);
 
@@ -64,7 +65,7 @@ const Profile = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 400, mx: "auto", mt: 4, p: 3 }}>
+    <Box sx={{ maxWidth: 400, mx: "auto", mt: 10, p: 3 }}>
       <Typography variant="h4" mb={3}>
         My Profile
       </Typography>
@@ -81,7 +82,7 @@ const Profile = () => {
           fullWidth
           required
           margin="normal"
-          value={name}
+          value={name ?? ""}
           onChange={(e) => setName(e.target.value)}
           disabled={saving}
         />
@@ -91,7 +92,7 @@ const Profile = () => {
           fullWidth
           required
           margin="normal"
-          value={email}
+          value={email ?? ""}
           onChange={(e) => setEmail(e.target.value)}
           disabled={saving}
         />

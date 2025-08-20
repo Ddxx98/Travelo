@@ -51,7 +51,7 @@ export const fetchUserProfile = createAsyncThunk(
     "auth/fetchUserProfile",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/auth/profile`, {
+            const response = await axios.get(`${API_BASE_URL}/api/profile`, {
                 headers: getAuthHeaders(),
             });
             return response.data;
@@ -66,7 +66,7 @@ export const updateUserProfile = createAsyncThunk(
     "auth/updateUserProfile",
     async (profileData, { rejectWithValue }) => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/api/auth/profile`, profileData, {
+            const response = await axios.put(`${API_BASE_URL}/api/profile`, profileData, {
                 headers: getAuthHeaders(),
             });
             return response.data;

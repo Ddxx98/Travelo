@@ -52,7 +52,7 @@ const MyBookings = () => {
   }
 
   return (
-    <Box>
+    <Box sx={{ mt: 10 }}>
       <Typography variant="h4" gutterBottom>
         My Bookings
       </Typography>
